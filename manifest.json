@@ -2,9 +2,6 @@
   "manifest_version": 3,
   "name": "Textlintabro",
   "version": "0.0.0",
-  "action": {
-    "default_popup": "index.html"
-  },
   "chrome_url_overrides": {
     "newtab": "src/newtab.html"
   }
