@@ -1,10 +1,12 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import './newtab.css'
+import * as monaco from "monaco-editor";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+const editorElement = document.querySelector<HTMLDivElement>("#editor")!;
+monaco.editor.create(editorElement, {
+  fontSize: 18,
+  language: "markdown",
+  lineHeight: 1.6,
+  minimap: { enabled: false },
+  padding: { bottom: 16, top: 16 },
+  theme: "vs-dark",
+});
