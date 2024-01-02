@@ -1,4 +1,4 @@
-import './newtab.css'
+import "./newtab.css";
 import "monaco-editor/esm/vs/editor/editor.all.js";
 import "monaco-editor/esm/vs/basic-languages/markdown/markdown.contribution";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
@@ -21,15 +21,15 @@ const editor = monaco.editor.create(
     minimap: { enabled: false },
     padding: { bottom: 16, top: 16 },
     theme: "vs-dark",
-  }
+  },
 );
 
 type TextlintWorkerMessage = {
   data: {
     command: string;
     result: TextlintResult;
-  }
-}
+  };
+};
 
 const textlintWorker = new TextlintWorker();
 
