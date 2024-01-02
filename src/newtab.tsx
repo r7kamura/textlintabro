@@ -34,27 +34,42 @@ type TextlintWorkerMessage = {
 const textlintWorker = new TextlintWorker();
 
 textlintWorker.onmessage = function (event: TextlintWorkerMessage) {
-  if (event.data.command !== "lint:result") {
-    return;
+  switch (event.data.command) {
+    case "init": {
+      textlintWorker.postMessage({
+        command: "merge-config",
+        textlintrc: {
+          rules: {
+            "preset-japanese": {
+              // TODO
+            },
+          },
+        },
+      });
+      break;
+    }
+    case "lint:result": {
+      const editorModel = editor.getModel();
+      if (!editorModel) {
+        break;
+      }
+      monaco.editor.setModelMarkers(
+        editorModel,
+        "textlint",
+        event.data.result.messages.map((message) => {
+          return {
+            severity: monaco.MarkerSeverity.Warning,
+            message: message.message,
+            startLineNumber: message.loc.start.line,
+            startColumn: message.loc.start.column,
+            endLineNumber: message.loc.end.line,
+            endColumn: editorModel.getLineLength(message.loc.end.line) + 1,
+          };
+        }),
+      );
+      break;
+    }
   }
-
-  const editorModel = editor.getModel();
-  if (!editorModel) {
-    return;
-  }
-
-  const markers = event.data.result.messages.map((message) => {
-    return {
-      severity: monaco.MarkerSeverity.Warning,
-      message: message.message,
-      startLineNumber: message.loc.start.line,
-      startColumn: message.loc.start.column,
-      endLineNumber: message.loc.end.line,
-      endColumn: editorModel.getLineLength(message.loc.end.line) + 1,
-    };
-  });
-
-  monaco.editor.setModelMarkers(editorModel, "textlint", markers);
 };
 
 editor.onDidChangeModelContent(() => {
