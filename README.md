@@ -16,7 +16,7 @@ npm install
 
 ### Build for development
 
-Starts a process that detects changes and continuously builds.
+Starts a process that continuously builds a development bundle into `./dist` directory.
 
 ```bash
 npm run dev
