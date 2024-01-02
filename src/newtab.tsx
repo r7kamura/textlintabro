@@ -4,6 +4,7 @@ import "monaco-editor/esm/vs/basic-languages/markdown/markdown.contribution";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import EditorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
 import TextlintWorker from "./textlint-worker?worker";
+import { TextlintResult } from "@textlint/types";
 
 self.MonacoEnvironment = {
   getWorker() {
@@ -23,14 +24,37 @@ const editor = monaco.editor.create(
   }
 );
 
+type TextlintWorkerMessage = {
+  data: {
+    command: string;
+    result: TextlintResult;
+  }
+}
+
 const textlintWorker = new TextlintWorker();
 
-textlintWorker.onmessage = function (event) {
+textlintWorker.onmessage = function (event: TextlintWorkerMessage) {
   if (event.data.command !== "lint:result") {
     return;
   }
 
-  console.log(event);
+  const editorModel = editor.getModel();
+  if (!editorModel) {
+    return;
+  }
+
+  const markers = event.data.result.messages.map((message) => {
+    return {
+      severity: monaco.MarkerSeverity.Warning,
+      message: message.message,
+      startLineNumber: message.loc.start.line,
+      startColumn: message.loc.start.column,
+      endLineNumber: message.loc.end.line,
+      endColumn: editorModel.getLineLength(message.loc.end.line) + 1,
+    };
+  });
+
+  monaco.editor.setModelMarkers(editorModel, "textlint", markers);
 };
 
 editor.onDidChangeModelContent(() => {
