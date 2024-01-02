@@ -12,9 +12,12 @@
     "build:textlint": "textlint-script-compiler --output-dir ./src",
     "build:tsc": "tsc",
     "build:vite": "vite build",
+    "fix": "npm run fix:eslint && npm run fix:prettier",
+    "fix:eslint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
+    "fix:prettier": "prettier --write .",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:prettier": "prettier --write .",
+    "lint:prettier": "prettier --check .",
     "preview": "vite preview"
   },
   "dependencies": {
