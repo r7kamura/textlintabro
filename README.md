@@ -2,6 +2,8 @@
 
 [Textlint](https://github.com/textlint/textlint)-integrated editor in new tab.
 
+![](images/screenshot.png)
+
 ## Development
 
 ### Setup
