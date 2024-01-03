@@ -1,5 +1,7 @@
 # Textlintabro
 
+[![CI](https://github.com/r7kamura/textlintabro/actions/workflows/ci.yml/badge.svg)](https://github.com/r7kamura/textlintabro/actions/workflows/ci.yml)
+
 [Textlint](https://github.com/textlint/textlint)-integrated editor in new tab.
 
 ![](images/screenshot.png)
